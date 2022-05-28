@@ -187,7 +187,7 @@ public class MessagingService
     {
         await using var dbContext = new DefaultDbContext();
         {
-            if (await dbContext.Counters.CountAsync(ct) > Constants.MaxActiveCounters)
+            if (await dbContext.Counters.Where(x => x.ChatId == chatId).CountAsync(ct) > Constants.MaxActiveCounters)
                 await botClient.SendTextMessageAsync(chatId,
                     "We have no buttons left for your counters 🤷‍♂️! \n "
                     + "Archive some counters to free our buttons.",
@@ -211,7 +211,7 @@ public class MessagingService
         await using var dbContext = new DefaultDbContext();
         {
             counters = await dbContext.Counters
-                .Where(x => !x.Archived)
+                .Where(x => !x.Archived && x.ChatId == chatId)
                 .OrderByDescending(x => x.Id)
                 .Take(Constants.MaxActiveCounters)
                 .ToListAsync(ct);
@@ -246,7 +246,7 @@ public class MessagingService
         await using var dbContext = new DefaultDbContext();
         {
             counters = await dbContext.Counters
-                .Where(x => x.Archived)
+                .Where(x => x.Archived && x.ChatId == chatId)
                 .OrderByDescending(x => x.Id)
                 .ToListAsync(ct);
         }
