@@ -194,7 +194,7 @@ public class MessagingService
                     replyMarkup: GetDefaultKeyboard(chatId),
                     cancellationToken: ct);
 
-            await dbContext.Database.ExecuteSqlRawAsync("delete from StateMachines where chatId = @p0", chatId);
+            await dbContext.Database.ExecuteSqlRawAsync("delete from StateMachines where ChatId = @p0", chatId);
             dbContext.StateMachines.Add(new StateMachine(chatId, States.Adding));
             await dbContext.SaveChangesAsync(ct);
         }
