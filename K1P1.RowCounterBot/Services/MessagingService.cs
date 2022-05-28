@@ -116,11 +116,19 @@ public class MessagingService
         await using var dbContext = new DefaultDbContext();
         {
             var counter = await dbContext.Counters
-                .FirstOrDefaultAsync(x => x.ChatId == chatId && x.Id == counterId, ct);
+                .FirstOrDefaultAsync(x => x.ChatId == chatId &&
+                                          x.Id == counterId,
+                    ct);
 
             if (counter == null)
             {
                 await SendUnknownMessage(chatId, botClient, ct);
+                return;
+            }
+
+            if (counter.Archived)
+            {
+                await SendCounterArchivedMessage(chatId, botClient, ct);
                 return;
             }
 
@@ -300,6 +308,14 @@ public class MessagingService
             cancellationToken: ct);
     }
 
+    private async Task SendCounterArchivedMessage(long chatId, ITelegramBotClient botClient, CancellationToken ct)
+    {
+        await botClient.SendTextMessageAsync(chatId,
+            "🗑 The counter is archived! Press /new to create a new one.",
+            replyMarkup: GetDefaultKeyboard(chatId),
+            cancellationToken: ct);
+    }
+    
     private async Task SendOnboardingMessage(
         long chatId,
         ITelegramBotClient botClient,
