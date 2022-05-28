@@ -7,6 +7,6 @@ services:
       - data:/db
     environment:
       BOT_TOKEN: "<YO>"
-      BOT_DATA_DIR: "db"
+      BOT_DATA_DIR: "/db"
 volumes:
   data:
