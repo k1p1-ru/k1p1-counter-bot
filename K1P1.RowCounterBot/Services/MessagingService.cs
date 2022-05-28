@@ -326,7 +326,11 @@ public class MessagingService
                 new Uri("https://media.giphy.com/media/3oEhmHmWP3Y9wQxoli/giphy-downsized.gif")),
             cancellationToken: ct);
         await botClient.SendTextMessageAsync(chatId,
-            "Now you can set your counters! 🧶",
+            "Now you can create your counters! 🧶\n\n"
+            + "👉 /new - create a new counter\n"
+            + "👉 /counters - view active counters\n"
+            + "👉 /archive - remove one of active counters\n"
+            + "👉 /archived - view archived counters",
             replyMarkup: GetDefaultKeyboard(chatId),
             cancellationToken: ct);
     }
