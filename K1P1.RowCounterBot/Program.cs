@@ -9,9 +9,6 @@ using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
-var dbPath = Environment.GetEnvironmentVariable(Constants.DbPathEnvVariable);
-if (!string.IsNullOrWhiteSpace(dbPath) && !Directory.Exists(dbPath))
-    Directory.CreateDirectory(dbPath);
 // ReSharper disable once UseAwaitUsing
 using (var dbContext = new DefaultDbContext())
 {
